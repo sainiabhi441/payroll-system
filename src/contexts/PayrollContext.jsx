@@ -1,9 +1,8 @@
 ﻿import { createContext, useContext, useState, useEffect } from "react";
-import axios from "axios";
 
 const PayrollContext = createContext();
 
-const API = import.meta.env.VITE_API_URL; // http://localhost:5000/api
+const API = import.meta.env.VITE_API_URL; // Example: https://payroll-system-backend-ogx4.onrender.com/api
 
 export const PayrollProvider = ({ children }) => {
   const [employees, setEmployees] = useState([]);
@@ -12,8 +11,9 @@ export const PayrollProvider = ({ children }) => {
   // 🔹 Fetch Employees FROM Backend
   const fetchEmployees = async () => {
     try {
-      const res = await axios.get(`${API}/employees`);
-      setEmployees(res.data);
+      const res = await fetch(`${API}/employees`);
+      const data = await res.json();
+      setEmployees(data);
     } catch (error) {
       console.error("Fetch Error:", error);
     }
@@ -26,8 +26,15 @@ export const PayrollProvider = ({ children }) => {
   // 🔹 Add Employee TO Backend
   const addEmployee = async (employee) => {
     try {
-      const res = await axios.post(`${API}/employees`, employee);
-      setEmployees([res.data, ...employees]);
+      const res = await fetch(`${API}/employees`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(employee),
+      });
+      const data = await res.json();
+      setEmployees([data, ...employees]);
     } catch (error) {
       console.error("Add Error:", error);
     }
@@ -36,17 +43,20 @@ export const PayrollProvider = ({ children }) => {
   // 🔹 Update Employee IN Backend
   const updateEmployee = async (updated) => {
     try {
-      const res = await axios.put(
-        `${API}/employees/${updated.empId}`,
-        updated
-      );
+      const res = await fetch(`${API}/employees/${updated.empId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updated),
+      });
+      const data = await res.json();
 
       setEmployees(
         employees.map((emp) =>
-          emp.empId === updated.empId ? res.data : emp
+          emp.empId === updated.empId ? data : emp
         )
       );
-
       setEditEmployee(null);
     } catch (error) {
       console.error("Update Error:", error);
@@ -56,7 +66,10 @@ export const PayrollProvider = ({ children }) => {
   // 🔹 Delete Employee FROM Backend
   const deleteEmployee = async (id) => {
     try {
-      await axios.delete(`${API}/employees/${id}`);
+      await fetch(`${API}/employees/${id}`, {
+        method: "DELETE",
+      });
+
       setEmployees(employees.filter((emp) => emp.empId !== id));
     } catch (error) {
       console.error("Delete Error:", error);
