@@ -22,7 +22,8 @@ export default function App() {
             </div>
 
             {/* RIGHT SIDE — SCROLLABLE LIST */}
-            <div className="col-md-8" style={{ maxHeight: "90vh", overflowY: "auto" }}>
+            <div className="col-md-8" style={{ maxHeight: "90vh", overflowY: "auto", marginTop: "15px" }}>
+
               <h2 className="fw-bold mb-3">Employee Payslips</h2>
               <PayslipList />
             </div>
