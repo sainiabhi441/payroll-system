@@ -8,93 +8,55 @@ export default function EmployeeCard({ emp }) {
   if (!emp) return null;
 
   return (
-    <div style={cardStyle.container}>
-      
-      {/* HEADER */}
-      <div style={cardStyle.header}>
-        <div>
-          <h3 style={{ margin: 0 }}>{emp.name}</h3>
-          <small style={{ color: "#666" }}>ID: {emp.empId}</small>
+    <div className="card shadow-sm mb-4 border-0" style={{ borderRadius: "16px", width: "340px" }}>
+      <div className="card-body">
 
-          <div style={{ color: "#444", marginTop: 4 }}>
-            {emp.department} • {emp.designation.toUpperCase()}
+        {/* HEADER */}
+        <div className="d-flex justify-content-between align-items-start">
+          <div>
+            <h5 className="card-title mb-1 fw-bold">{emp.name}</h5>
+            <small className="text-muted">ID: {emp.empId}</small>
+
+            <div className="mt-1 text-secondary">
+              {emp.department} • {emp.designation.toUpperCase()}
+            </div>
+          </div>
+
+          {/* ICONS */}
+          <div className="d-flex gap-2">
+            <button
+              onClick={() => setEditEmployee(emp)}
+              className="btn btn-light btn-sm border"
+              title="Edit"
+            >
+              ✏️
+            </button>
+
+            <button
+              onClick={() => {
+                if (confirm("Are you sure you want to delete this?")) {
+                  deleteEmployee(emp.empId);
+                }
+              }}
+              className="btn btn-light btn-sm border"
+              title="Delete"
+            >
+              🗑️
+            </button>
           </div>
         </div>
 
-        {/* ICONS */}
-        <div style={cardStyle.iconRow}>
-          <button
-            onClick={() => setEditEmployee(emp)}
-            style={cardStyle.iconBtn}
-            title="Edit"
-          >
-            ✏️
-          </button>
+        {/* SALARY DETAILS */}
+        <ul className="list-group list-group-flush mt-3">
+          <li className="list-group-item px-0">Basic: ₹{emp.basic}</li>
+          <li className="list-group-item px-0">HRA: ₹{emp.hra}</li>
+          <li className="list-group-item px-0">DA: ₹{emp.da}</li>
+          <li className="list-group-item px-0">PF: ₹{emp.pf}</li>
+        </ul>
 
-          <button
-            onClick={() => {
-              if (confirm("Are you sure you want to delete this?")) {
-                deleteEmployee(emp.empId);
-              }
-            }}
-            style={cardStyle.iconBtn}
-            title="Delete"
-          >
-            🗑️
-          </button>
-        </div>
-      </div>
-
-      {/* SALARY DETAILS */}
-      <div style={cardStyle.details}>
-        <p>Basic: ₹{emp.basic}</p>
-        <p>HRA: ₹{emp.hra}</p>
-        <p>DA: ₹{emp.da}</p>
-        <p>PF: ₹{emp.pf}</p>
-      </div>
-
-      {/* GROSS */}
-      <div style={{ textAlign: "right", marginTop: 8 }}>
-        <strong>Gross: ₹{emp.gross}</strong>
+        {/* GROSS */}
+        <h6 className="text-end mt-3 fw-bold">Gross: ₹{emp.gross}</h6>
       </div>
     </div>
   );
 }
-
-const cardStyle = {
-  container: {
-    background: "#fff",
-    padding: 22,
-    borderRadius: 12,
-    boxShadow: "0 8px 20px rgba(0,0,0,0.06)",
-    marginBottom: 18,
-    border: "1px solid #eee",
-    width: "330px",         // ⭐ CARD WIDTH ADDED (SIZE BADA KIYA)
-  },
-
-  header: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-  },
-
-  details: {
-    marginTop: 10,
-    lineHeight: "1.6",
-    color: "#333",
-  },
-
-  iconRow: {
-    display: "flex",
-    gap: 6,               // Close but not touching 👍
-    alignItems: "center",
-  },
-
-  iconBtn: {
-    background: "transparent",
-    border: "none",
-    cursor: "pointer",
-    fontSize: 18,
-    padding: "4px",
-  },
-};

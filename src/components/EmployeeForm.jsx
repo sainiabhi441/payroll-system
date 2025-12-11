@@ -66,27 +66,30 @@ export default function EmployeeForm() {
   };
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.heading}>
+    <div className="card shadow-sm p-4" style={{ width: "390px" }}>
+      <h3 className="mb-3 text-dark fw-semibold">
         {editEmployee ? "Edit Employee" : "Add New Employee"}
-      </h2>
+      </h3>
 
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <div style={styles.inputGroup}>
-          <label>Name</label>
+      <form onSubmit={handleSubmit} className="d-flex flex-column gap-3">
+
+        {/* NAME */}
+        <div className="form-group">
+          <label className="fw-medium mb-1">Name</label>
           <input
-            style={styles.input}
+            className="form-control"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
           />
         </div>
 
-        <div style={styles.row}>
-          <div style={styles.inputGroup}>
-            <label>Department</label>
+        {/* ROW: DEPT + DESIGNATION */}
+        <div className="row">
+          <div className="col">
+            <label className="fw-medium mb-1">Department</label>
             <select
-              style={styles.input}
+              className="form-control"
               value={department}
               onChange={(e) => {
                 setDepartment(e.target.value);
@@ -99,12 +102,10 @@ export default function EmployeeForm() {
             </select>
           </div>
 
-          <div style={styles.inputGroup}>
-            <label>Designation</label>
-
-            {/* CAPITALIZED dropdown */}
+          <div className="col">
+            <label className="fw-medium mb-1">Designation</label>
             <select
-              style={styles.input}
+              className="form-control"
               value={designation}
               onChange={(e) => setDesignation(e.target.value)}
             >
@@ -117,84 +118,36 @@ export default function EmployeeForm() {
           </div>
         </div>
 
-        <div style={styles.inputGroup}>
-          <label>Basic Salary</label>
+        {/* BASIC SALARY */}
+        <div className="form-group">
+          <label className="fw-medium mb-1">Basic Salary</label>
           <input
             type="number"
-            style={styles.input}
+            className="form-control"
             value={basic}
             onChange={(e) => setBasic(e.target.value)}
             required
           />
         </div>
 
-        <button type="submit" style={styles.btn}>
+        {/* BUTTON */}
+        <button type="submit" className="btn btn-dark w-100 mt-2 fw-semibold">
           {editEmployee ? "Update Employee" : "Save Employee"}
         </button>
       </form>
 
+      {/* Preview BOX */}
       {preview && (
-        <div style={styles.preview}>
-          <h3>Payslip Preview</h3>
-          <p>Basic: ₹{preview.basic}</p>
-          <p>HRA: ₹{preview.hra}</p>
-          <p>DA: ₹{preview.da}</p>
-          <p>PF: ₹{preview.pf}</p>
+        <div className="mt-4 p-3 rounded bg-light border">
+          <h5>Payslip Preview</h5>
+          <p className="mb-1">Basic: ₹{preview.basic}</p>
+          <p className="mb-1">HRA: ₹{preview.hra}</p>
+          <p className="mb-1">DA: ₹{preview.da}</p>
+          <p className="mb-1">PF: ₹{preview.pf}</p>
 
-          <h3 style={{ marginTop: 10 }}>Gross Salary: ₹{preview.gross}</h3>
+          <h5 className="mt-3">Gross Salary: ₹{preview.gross}</h5>
         </div>
       )}
     </div>
   );
 }
-
-const styles = {
-  container: {
-    width: "390px",
-    background: "#fff",
-    padding: 25,
-    borderRadius: 12,
-    boxShadow: "0 8px 22px rgba(0,0,0,0.08)",
-  },
-  heading: {
-    marginBottom: 15,
-    color: "#1F2937",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 12,
-  },
-  row: {
-    display: "flex",
-    gap: 15,
-  },
-  inputGroup: {
-    flex: 1,
-    display: "flex",
-    flexDirection: "column",
-  },
-  input: {
-    marginTop: 5,
-    padding: "10px 12px",
-    border: "1px solid #d1d5db",
-    borderRadius: 8,
-    fontSize: "14px",
-  },
-  btn: {
-    marginTop: 12,
-    padding: "12px",
-    background: "#111827",
-    color: "#fff",
-    borderRadius: 8,
-    cursor: "pointer",
-    fontWeight: 600,
-    border: "none",
-  },
-  preview: {
-    marginTop: 18,
-    background: "#F3F4F6",
-    padding: 12,
-    borderRadius: 10,
-  },
-};

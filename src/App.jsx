@@ -8,18 +8,25 @@ import PayslipList from "./components/payroll/PayslipList";
 export default function App() {
   return (
     <PayrollProvider>
-      <div style={styles.page}>
-        <div style={styles.container}>
+      <div className="bg-light min-vh-100 py-4">
+        <div className="container">
 
-          {/* LEFT SIDE — FIXED FORM */}
-          <div style={styles.left}>
-            <EmployeeForm />
-          </div>
+          <div className="row g-5">
 
-          {/* RIGHT SIDE — SCROLLABLE LIST */}
-          <div style={styles.right}>
-            <h2 style={styles.heading}>Employee Payslips</h2>
-            <PayslipList />
+            {/* LEFT SIDE — FIXED FORM */}
+            <div
+              className="col-md-4 position-sticky"
+              style={{ top: "20px", height: "fit-content" }}
+            >
+              <EmployeeForm />
+            </div>
+
+            {/* RIGHT SIDE — SCROLLABLE LIST */}
+            <div className="col-md-8" style={{ maxHeight: "90vh", overflowY: "auto" }}>
+              <h2 className="fw-bold mb-3">Employee Payslips</h2>
+              <PayslipList />
+            </div>
+
           </div>
 
         </div>
@@ -27,40 +34,3 @@ export default function App() {
     </PayrollProvider>
   );
 }
-
-const styles = {
-  page: {
-    background: "#f3f4f6",
-    minHeight: "100vh",
-    padding: "30px",
-    boxSizing: "border-box",
-  },
-
-  container: {
-    display: "flex",
-    gap: "150px",              // बड़ा clean gap form और cards के बीच
-    maxWidth: "1400px",
-    margin: "0 auto",
-    alignItems: "flex-start",
-  },
-
-  left: {
-    width: "420px",
-    position: "sticky",        // 👈 Form को fixed रखेगा
-    top: "20px",
-    height: "fit-content",
-  },
-
-  right: {
-    flex: 1,
-    maxHeight: "90vh",
-    overflowY: "auto",         // 👈 केवल कार्ड्स scroll होंगे
-    paddingRight: "10px",
-  },
-
-  heading: {
-    marginBottom: "18px",
-    fontSize: "24px",
-    fontWeight: "700",
-  },
-};

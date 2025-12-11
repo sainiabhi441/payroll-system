@@ -7,14 +7,15 @@ export default function PayslipList() {
   const { employees } = usePayroll();
 
   return (
-    <div style={{ marginTop: 20 }}>
-      
+    <div className="mt-3">
 
+      {/* No employees message */}
       {employees.length === 0 && (
-        <p style={{ color: "#666" }}>No employees added yet.</p>
+        <p className="text-muted">No employees added yet.</p>
       )}
 
-      <div style={styles.listContainer}>
+      {/* LIST CONTAINER */}
+      <div className="d-flex flex-column gap-3">
         {employees.map((emp) => (
           <EmployeeCard key={emp.empId} emp={emp} />
         ))}
@@ -22,15 +23,3 @@ export default function PayslipList() {
     </div>
   );
 }
-
-const styles = {
-  heading: {
-    marginBottom: "15px",
-    fontWeight: "bold",
-  },
-  listContainer: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "10px",
-  },
-};
