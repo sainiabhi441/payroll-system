@@ -11,13 +11,12 @@ export default function App() {
       <div className="bg-light min-vh-100 py-4">
         <div className="container">
 
-          {/* ⭐ Custom row with manual spacing fix */}
-          <div className="d-flex" style={{ gap: "120px" }}>
+          <div className="row">
 
             {/* LEFT SIDE — FIXED FORM */}
             <div
+              className="col-md-4"
               style={{
-                width: "380px",
                 position: "sticky",
                 top: "20px",
                 height: "fit-content"
@@ -28,11 +27,11 @@ export default function App() {
 
             {/* RIGHT SIDE — SCROLLABLE LIST */}
             <div
+              className="col-md-8"
               style={{
-                flex: 1,
                 maxHeight: "90vh",
                 overflowY: "auto",
-                paddingLeft: "120px"   // ⭐ small internal spacing
+                paddingLeft: "40px"   // ⭐ RIGHT GAP FIX — बस इतना ही चाहिए
               }}
             >
               <h2 className="fw-bold mb-3">Employee Payslips</h2>
