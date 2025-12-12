@@ -9,31 +9,33 @@ export default function App() {
   return (
     <PayrollProvider>
       <div className="bg-light min-vh-100 py-4">
-        <div className="container">
+        
+        {/* ⭐ Container padding removed for better alignment */}
+        <div className="container" style={{ paddingLeft: "0px" }}>
 
           <div className="row">
 
-            {/* LEFT SIDE — FIXED FORM */}
+            {/* LEFT FORM */}
             <div
               className="col-md-4"
               style={{
                 position: "sticky",
                 top: "20px",
                 height: "fit-content",
-                marginLeft: "-40px"     // ⭐ FORM ko left shift kiya
+                marginLeft: "-25px"   // ⭐ balanced left shift
               }}
             >
               <EmployeeForm />
             </div>
 
-            {/* RIGHT SIDE — SCROLLABLE LIST */}
+            {/* RIGHT LIST */}
             <div
               className="col-md-8"
               style={{
                 maxHeight: "88vh",
                 overflowY: "auto",
-                paddingLeft: "10px",    // ⭐ Gap controlled
-                marginTop: "20px"       // ⭐ Scroll ko form ke barabar align kiya
+                marginTop: "20px",
+                paddingLeft: "10px"  // ⭐ scroll bar perfectly aligned
               }}
             >
               <h2 className="fw-bold mb-3">Employee Payslips</h2>
