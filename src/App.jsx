@@ -19,7 +19,8 @@ export default function App() {
               style={{
                 position: "sticky",
                 top: "20px",
-                height: "fit-content"
+                height: "fit-content",
+                marginLeft: "-40px"     // ⭐ FORM ko left shift kiya
               }}
             >
               <EmployeeForm />
@@ -29,9 +30,10 @@ export default function App() {
             <div
               className="col-md-8"
               style={{
-                maxHeight: "90vh",
+                maxHeight: "88vh",
                 overflowY: "auto",
-                paddingLeft: "40px"   // ⭐ RIGHT GAP FIX — बस इतना ही चाहिए
+                paddingLeft: "10px",    // ⭐ Gap controlled
+                marginTop: "20px"       // ⭐ Scroll ko form ke barabar align kiya
               }}
             >
               <h2 className="fw-bold mb-3">Employee Payslips</h2>
