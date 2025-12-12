@@ -66,7 +66,8 @@ export default function EmployeeForm() {
   };
 
   return (
-    <div className="card shadow-sm p-4" style={{ width: "390px" }}>
+    <div className="card shadow-sm p-4" style={{ width: "100%" }}>
+
       <h3 className="mb-3 text-dark fw-semibold">
         {editEmployee ? "Edit Employee" : "Add New Employee"}
       </h3>
