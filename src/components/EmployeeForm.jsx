@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { usePayroll } from "../contexts/PayrollContext";
 import { calcGross } from "../utils/salaryCalc";
 
+
 const designationMap = {
   Production: ["je", "se"],
   Marketing: ["asm", "me"],
@@ -17,7 +18,6 @@ export default function EmployeeForm() {
   const [department, setDepartment] = useState("Production");
   const [designation, setDesignation] = useState("je");
   const [basic, setBasic] = useState("");
-
   const [preview, setPreview] = useState(null);
 
   // Prefill when editing
@@ -30,7 +30,7 @@ export default function EmployeeForm() {
     }
   }, [editEmployee]);
 
-  // Auto preview calculation
+  // Auto preview
   useEffect(() => {
     if (basic !== "") {
       setPreview(calcGross(basic, designation));
@@ -57,7 +57,6 @@ export default function EmployeeForm() {
       addEmployee(emp);
     }
 
-    // Reset
     setName("");
     setBasic("");
     setDepartment("Production");
@@ -66,31 +65,28 @@ export default function EmployeeForm() {
   };
 
   return (
-    <div className="card shadow-sm p-4" style={{ width: "100%" }}>
-
-      <h3 className="mb-3 text-dark fw-semibold">
+    <div className="employee-form">
+      <h3 className="form-title">
         {editEmployee ? "Edit Employee" : "Add New Employee"}
       </h3>
 
-      <form onSubmit={handleSubmit} className="d-flex flex-column gap-3">
+      <form onSubmit={handleSubmit} className="form-body">
 
         {/* NAME */}
-        <div className="form-group">
-          <label className="fw-medium mb-1">Name</label>
+        <div className="field">
+          <label>Name</label>
           <input
-            className="form-control"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
           />
         </div>
 
-        {/* ROW: DEPT + DESIGNATION */}
-        <div className="row">
-          <div className="col">
-            <label className="fw-medium mb-1">Department</label>
+        {/* DEPARTMENT + DESIGNATION */}
+        <div className="field-row">
+          <div className="field">
+            <label>Department</label>
             <select
-              className="form-control"
               value={department}
               onChange={(e) => {
                 setDepartment(e.target.value);
@@ -103,10 +99,9 @@ export default function EmployeeForm() {
             </select>
           </div>
 
-          <div className="col">
-            <label className="fw-medium mb-1">Designation</label>
+          <div className="field">
+            <label>Designation</label>
             <select
-              className="form-control"
               value={designation}
               onChange={(e) => setDesignation(e.target.value)}
             >
@@ -119,12 +114,11 @@ export default function EmployeeForm() {
           </div>
         </div>
 
-        {/* BASIC SALARY */}
-        <div className="form-group">
-          <label className="fw-medium mb-1">Basic Salary</label>
+        {/* BASIC */}
+        <div className="field">
+          <label>Basic Salary</label>
           <input
             type="number"
-            className="form-control"
             value={basic}
             onChange={(e) => setBasic(e.target.value)}
             required
@@ -132,21 +126,23 @@ export default function EmployeeForm() {
         </div>
 
         {/* BUTTON */}
-        <button type="submit" className="btn btn-dark w-100 mt-2 fw-semibold">
+        <button type="submit" className="submit-btn">
           {editEmployee ? "Update Employee" : "Save Employee"}
         </button>
       </form>
 
-      {/* Preview BOX */}
+      {/* PREVIEW */}
       {preview && (
-        <div className="mt-4 p-3 rounded bg-light border">
-          <h5>Payslip Preview</h5>
-          <p className="mb-1">Basic: ₹{preview.basic}</p>
-          <p className="mb-1">HRA: ₹{preview.hra}</p>
-          <p className="mb-1">DA: ₹{preview.da}</p>
-          <p className="mb-1">PF: ₹{preview.pf}</p>
+        <div className="preview-box">
+          <h4>Payslip Preview</h4>
+          <p>Basic: ₹{preview.basic}</p>
+          <p>HRA: ₹{preview.hra}</p>
+          <p>DA: ₹{preview.da}</p>
+          <p>PF: ₹{preview.pf}</p>
 
-          <h5 className="mt-3">Gross Salary: ₹{preview.gross}</h5>
+          <h4 className="gross-preview">
+            Gross Salary: ₹{preview.gross}
+          </h4>
         </div>
       )}
     </div>

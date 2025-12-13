@@ -3,19 +3,20 @@ import React from "react";
 import { usePayroll } from "../../contexts/PayrollContext";
 import EmployeeCard from "./EmployeeCard";
 
+
 export default function PayslipList() {
   const { employees } = usePayroll();
 
   return (
-    <div className="mt-3">
+    <div className="payslip-list">
 
       {/* No employees message */}
       {employees.length === 0 && (
-        <p className="text-muted">No employees added yet.</p>
+        <p className="empty-text">No employees added yet.</p>
       )}
 
       {/* LIST CONTAINER */}
-      <div className="d-flex flex-column gap-3">
+      <div className="card-list">
         {employees.map((emp) => (
           <EmployeeCard key={emp.empId} emp={emp} />
         ))}
