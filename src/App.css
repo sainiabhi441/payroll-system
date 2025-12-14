@@ -10,9 +10,10 @@
    ========================= */
 .app {
   min-height: 100vh;
-  background-color: #eef1f4;   /* हल्का shaded background */
+  background-color: #e2e6ea;   /* 👈 थोड़ा और dark */
   padding: 24px;
 }
+
 
 /* =========================
    HEADER BAR
