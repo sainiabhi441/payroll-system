@@ -51,6 +51,11 @@ Error generating stack: `+u.message+`
             display: flex;
             gap:20px;
           }
+            
+            .field-row .field {
+             flex: 1;
+             }
+
 
           .submit-btn {
             margin-top: 6px;
