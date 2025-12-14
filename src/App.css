@@ -88,11 +88,20 @@
 }
 
 /* =========================
-   FORM FIELD SPACING
+   FORM FIELD SPACING (FIX)
    ========================= */
 .field-row {
   display: flex;
-  gap: 20px;
+  gap: 20px;               /* 👈 Department ↔ Designation gap */
+}
+
+.field-row .field {
+  flex: 1;                 /* 👈 दोनों बराबर width */
+}
+
+.field-row select,
+.field-row input {
+  width: 100%;
 }
 
 /* =========================
