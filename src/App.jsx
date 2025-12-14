@@ -13,10 +13,7 @@ export default function App() {
     <PayrollProvider>
       <div className="app">
 
-        {/* ✅ HEADER ADDED HERE */}
-        <header className="app-header">
-          PAYROLL-SYSTEM
-        </header>
+        
 
         <div className="layout">
           {/* LEFT SIDE : FORM */}
