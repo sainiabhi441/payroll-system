@@ -110,6 +110,11 @@ export default function EmployeeForm() {
             display: flex;
             gap:20px;
           }
+            
+            .field-row .field {
+             flex: 1;
+             }
+
 
           .submit-btn {
             margin-top: 6px;
