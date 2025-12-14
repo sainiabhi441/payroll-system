@@ -1,11 +1,12 @@
-// src/App.jsx
 import React from "react";
 import { PayrollProvider } from "./contexts/PayrollContext";
 
 import EmployeeForm from "./components/EmployeeForm";
 import PayslipList from "./components/payroll/PayslipList";
 
-import "./App.css";
+/* CSS */
+import "./index.css";   // global base styles
+import "./App.css";     // layout + scroll styles
 
 export default function App() {
   return (
@@ -13,12 +14,12 @@ export default function App() {
       <div className="app">
         <div className="layout">
 
-          {/* LEFT FORM */}
+          {/* LEFT SIDE : FORM */}
           <aside className="left-panel">
             <EmployeeForm />
           </aside>
 
-          {/* RIGHT LIST */}
+          {/* RIGHT SIDE : LIST */}
           <main className="right-panel">
             <h2 className="title">Employee Payslips</h2>
             <PayslipList />
