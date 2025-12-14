@@ -15,24 +15,35 @@
 }
 
 /* =========================
-   HEADER BAR
+   HEADER BAR (UPDATED)
    ========================= */
 .app-header {
   width: 100%;
-  padding: 18px 28px;
+  padding: 16px 28px;
   margin-bottom: 24px;
 
-  background: linear-gradient(90deg, #1e3c72, #2a5298);
+  /* 👇 lighter & clean gradient */
+  background: linear-gradient(
+    90deg,
+    #4f7fcf,
+    #6fa3e8
+  );
+
   color: #ffffff;
 
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 800;
   letter-spacing: 2px;
   text-transform: uppercase;
 
+  display: flex;              /* 👈 center text */
+  align-items: center;
+  justify-content: center;
+
   border-radius: 14px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
+
 
 /* =========================
    MAIN LAYOUT (DESKTOP)
