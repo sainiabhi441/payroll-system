@@ -10,8 +10,32 @@
    ========================= */
 .app {
   min-height: 100vh;
-  background-color: #f8f9fa;
+  background-color: #eef1f4;   /* हल्का shaded background */
   padding: 24px;
+}
+
+/* =========================
+   HEADER BAR
+   ========================= */
+.app-header {
+  width: 100%;
+  padding: 18px 28px;
+  margin-bottom: 24px;
+
+  background: linear-gradient(
+    90deg,
+    #1e3c72,
+    #2a5298
+  );
+
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+
+  border-radius: 14px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
 /* =========================
@@ -36,9 +60,9 @@
    RIGHT LIST PANEL
    ========================= */
 .right-panel {
-  max-height: calc(100vh - 48px);
+  max-height: calc(100vh - 140px); /* header + padding adjust */
   overflow-y: auto;
-  padding-right: 8px; /* 👈 scrollbar cards ke paas */
+  padding-right: 8px; /* scrollbar cards ke paas */
 }
 
 /* =========================

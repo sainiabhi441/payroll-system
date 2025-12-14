@@ -3,17 +3,22 @@ import { PayrollProvider } from "./contexts/PayrollContext";
 
 import EmployeeForm from "./components/EmployeeForm";
 import PayslipList from "./components/payroll/PayslipList";
-
+import Header from "./components/Header";
 /* CSS */
 import "./index.css";   // global base styles
-import "./App.css";     // layout + scroll styles
+import "./App.css";     // layout + header styles
 
 export default function App() {
   return (
     <PayrollProvider>
       <div className="app">
-        <div className="layout">
 
+        {/* ✅ HEADER ADDED HERE */}
+        <header className="app-header">
+          PAYROLL-SYSTEM
+        </header>
+
+        <div className="layout">
           {/* LEFT SIDE : FORM */}
           <aside className="left-panel">
             <EmployeeForm />
@@ -24,8 +29,8 @@ export default function App() {
             <h2 className="title">Employee Payslips</h2>
             <PayslipList />
           </main>
-
         </div>
+
       </div>
     </PayrollProvider>
   );

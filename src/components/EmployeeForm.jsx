@@ -108,7 +108,7 @@ export default function EmployeeForm() {
 
           .field-row {
             display: flex;
-            gap: 12px;
+            gap:20px;
           }
 
           .submit-btn {
