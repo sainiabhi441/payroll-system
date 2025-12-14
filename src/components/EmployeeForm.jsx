@@ -74,8 +74,8 @@ export default function EmployeeForm() {
           }
 
           .form-title {
-            font-size: 20px;
-            font-weight: 600;
+            font-size: 22px;
+            font-weight: 700;
             margin-bottom: 16px;
             color: #111;
           }
@@ -92,8 +92,8 @@ export default function EmployeeForm() {
           }
 
           .field label {
-            font-size: 14px;
-            font-weight: 500;
+            font-size: 16px;
+            font-weight: 600;
             margin-bottom: 4px;
             color: #333;
           }
@@ -110,7 +110,7 @@ export default function EmployeeForm() {
             display: flex;
             gap:20px;
           }
-            
+
             .field-row .field {
              flex: 1;
              }
