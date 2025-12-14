@@ -49,7 +49,7 @@ Error generating stack: `+u.message+`
 
           .field-row {
             display: flex;
-            gap: 12px;
+            gap:20px;
           }
 
           .submit-btn {
