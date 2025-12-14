@@ -1,5 +1,5 @@
 /* =========================
-   GLOBAL RESET (safe)
+   GLOBAL RESET (SAFE)
    ========================= */
 * {
   box-sizing: border-box;
@@ -10,10 +10,9 @@
    ========================= */
 .app {
   min-height: 100vh;
-  background-color: #e2e6ea;   /* 👈 थोड़ा और dark */
+  background-color: #e2e6ea;
   padding: 24px;
 }
-
 
 /* =========================
    HEADER BAR
@@ -23,13 +22,9 @@
   padding: 18px 28px;
   margin-bottom: 24px;
 
-  background: linear-gradient(
-    90deg,
-    #1e3c72,
-    #2a5298
-  );
-
+  background: linear-gradient(90deg, #1e3c72, #2a5298);
   color: #ffffff;
+
   font-size: 24px;
   font-weight: 800;
   letter-spacing: 2px;
@@ -40,7 +35,7 @@
 }
 
 /* =========================
-   MAIN LAYOUT
+   MAIN LAYOUT (DESKTOP)
    ========================= */
 .layout {
   display: grid;
@@ -61,9 +56,9 @@
    RIGHT LIST PANEL
    ========================= */
 .right-panel {
-  max-height: calc(100vh - 140px); /* header + padding adjust */
+  max-height: calc(100vh - 140px);
   overflow-y: auto;
-  padding-right: 8px; /* scrollbar cards ke paas */
+  padding-right: 8px;
 }
 
 /* =========================
@@ -93,20 +88,39 @@
 }
 
 /* =========================
-   RESPONSIVE (MOBILE)
+   FORM FIELD SPACING
+   ========================= */
+.field-row {
+  display: flex;
+  gap: 20px;
+}
+
+/* =========================
+   MOBILE RESPONSIVE
    ========================= */
 @media (max-width: 900px) {
   .layout {
     grid-template-columns: 1fr;
   }
 
-  .right-panel {
-    max-height: none;
-    overflow-y: visible;
-  }
-
   .left-panel {
     position: relative;
     top: 0;
+  }
+
+  .right-panel {
+    max-height: none;
+    overflow-y: visible;
+    padding-right: 0;
+  }
+
+  .field-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .app-header {
+    font-size: 20px;
+    text-align: center;
   }
 }
