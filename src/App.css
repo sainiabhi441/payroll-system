@@ -144,16 +144,20 @@
     text-align: center;
   }
 }
+
 /* =========================
-   FIXED PAYSLIP HEADER
+   FIXED PAYSLIP HEADER (FINAL)
    ========================= */
 .payslip-header {
   position: sticky;
-  top: 0;                     /* right-panel ke top pe fix */
+  top: 0;
   z-index: 10;
 
-  background: #f1f5fb;        /* light blue-gray */
-  padding: 14px 18px;
+  display: inline-block;        /* ⭐ सबसे जरूरी */
+  width: fit-content;           /* ⭐ text जितना ही size */
+
+  background: #f1f5fb;
+  padding: 12px 20px;
   margin-bottom: 16px;
 
   border-radius: 12px;
