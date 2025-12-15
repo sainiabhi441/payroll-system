@@ -104,13 +104,13 @@ Error generating stack: `+u.message+`
           }
         }
       `}),O.jsxs("div",{className:"employee-form",children:[O.jsx("h3",{className:"form-title",children:R?"Edit Employee":"Add New Employee"}),O.jsxs("form",{onSubmit:jl,className:"form-body",children:[O.jsxs("div",{className:"field",children:[O.jsx("label",{children:"Name"}),O.jsx("input",{value:B,onChange:al=>V(al.target.value),required:!0})]}),O.jsxs("div",{className:"field-row",children:[O.jsxs("div",{className:"field",children:[O.jsx("label",{children:"Department"}),O.jsxs("select",{value:tl,onChange:al=>{hl(al.target.value),r(My[al.target.value][0])},children:[O.jsx("option",{children:"Production"}),O.jsx("option",{children:"Marketing"}),O.jsx("option",{children:"Accounts"})]})]}),O.jsxs("div",{className:"field",children:[O.jsx("label",{children:"Designation"}),O.jsx("select",{value:N,onChange:al=>r(al.target.value),children:My[tl].map(al=>O.jsx("option",{value:al,children:al.toUpperCase()},al))})]})]}),O.jsxs("div",{className:"field",children:[O.jsx("label",{children:"Basic Salary"}),O.jsx("input",{type:"number",value:j,onChange:al=>M(al.target.value),required:!0})]}),O.jsx("button",{type:"submit",className:"submit-btn",children:R?"Update Employee":"Save Employee"})]}),Y&&O.jsxs("div",{className:"preview-box",children:[O.jsx("h4",{children:"Payslip Preview"}),O.jsxs("p",{children:["Basic: ₹",Y.basic]}),O.jsxs("p",{children:["HRA: ₹",Y.hra]}),O.jsxs("p",{children:["DA: ₹",Y.da]}),O.jsxs("p",{children:["PF: ₹",Y.pf]}),O.jsxs("h4",{className:"gross-preview",children:["Gross Salary: ₹",Y.gross]})]})]})]})}function ov({emp:T}){const{setEditEmployee:L,deleteEmployee:R}=vi();return T?O.jsxs(O.Fragment,{children:[O.jsx("style",{children:`
-          .employee-card {
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 16px 18px;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.08);
-            width: 100%;
-          }
+  .employee-card {
+  background: #f3f6fb;   /* 👈 हल्का blue-gray (soft & clean) */
+  border-radius: 16px;
+  padding: 16px 18px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  width: 100%;
+}
 
           .card-header {
             display: flex;
