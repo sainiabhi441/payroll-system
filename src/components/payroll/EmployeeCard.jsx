@@ -11,13 +11,13 @@ export default function EmployeeCard({ emp }) {
       {/* 🔹 CSS INSIDE COMPONENT (no extra file) */}
       <style>
         {`
-          .employee-card {
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 16px 18px;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.08);
-            width: 100%;
-          }
+  .employee-card {
+  background: #f3f6fb;   /* 👈 हल्का blue-gray (soft & clean) */
+  border-radius: 16px;
+  padding: 16px 18px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  width: 100%;
+}
 
           .card-header {
             display: flex;
