@@ -26,7 +26,12 @@ export default function App() {
 
           {/* RIGHT SIDE : LIST */}
           <main className="right-panel">
-            <h2 className="title">Employee Payslips</h2>
+
+            {/* ✅ FIXED PAYSLIP HEADER */}
+            <div className="payslip-header">
+              Employee Payslips
+            </div>
+
             <PayslipList />
           </main>
         </div>

@@ -144,3 +144,24 @@
     text-align: center;
   }
 }
+/* =========================
+   FIXED PAYSLIP HEADER
+   ========================= */
+.payslip-header {
+  position: sticky;
+  top: 0;                     /* right-panel ke top pe fix */
+  z-index: 10;
+
+  background: #f1f5fb;        /* light blue-gray */
+  padding: 14px 18px;
+  margin-bottom: 16px;
+
+  border-radius: 12px;
+  border: 1px solid #dde5f0;
+
+  font-size: 22px;
+  font-weight: 700;
+  color: #1f2d3d;
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
