@@ -2,7 +2,7 @@
 
 const PayrollContext = createContext();
 
-const API = import.meta.env.VITE_API_URL; 
+const API = import.meta.env.VITE_API_URL;
 const STORAGE_KEY = "payroll_employees";
 
 export const PayrollProvider = ({ children }) => {
@@ -10,7 +10,7 @@ export const PayrollProvider = ({ children }) => {
   const [editEmployee, setEditEmployee] = useState(null);
 
   /* =========================
-     LOAD EMPLOYEES (ON START)
+        LOAD EMPLOYEES
      ========================= */
   useEffect(() => {
     loadEmployees();
@@ -20,31 +20,38 @@ export const PayrollProvider = ({ children }) => {
     try {
       const res = await fetch(`${API}/employees`);
       if (!res.ok) throw new Error("Backend not available");
-      const data = await res.json();
 
+      const data = await res.json();
       setEmployees(data);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     } catch (err) {
       console.warn("Backend down → loading from localStorage");
 
       const localData = localStorage.getItem(STORAGE_KEY);
-      if (localData) {
-        setEmployees(JSON.parse(localData));
-      } else {
-        setEmployees([]);
-      }
+      setEmployees(localData ? JSON.parse(localData) : []);
     }
   };
+
+  /* =========================
+        NORMALIZE EMPLOYEE
+     ========================= */
+  const normalizeEmployee = (emp) => ({
+    ...emp,
+    workingDays: emp.workingDays ?? 26,
+    presentDays: emp.presentDays ?? emp.workingDays ?? 26,
+  });
 
   /* =========================
         ADD EMPLOYEE
      ========================= */
   const addEmployee = async (employee) => {
+    const normalizedEmployee = normalizeEmployee(employee);
+
     try {
       const res = await fetch(`${API}/employees`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(employee),
+        body: JSON.stringify(normalizedEmployee),
       });
 
       if (!res.ok) throw new Error("Add failed");
@@ -57,9 +64,12 @@ export const PayrollProvider = ({ children }) => {
     } catch (err) {
       console.warn("Backend down → add locally");
 
-      const localEmp = { ...employee, empId: Date.now() };
-      const updated = [localEmp, ...employees];
+      const localEmp = {
+        ...normalizedEmployee,
+        empId: Date.now(),
+      };
 
+      const updated = [localEmp, ...employees];
       setEmployees(updated);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
     }
@@ -69,13 +79,15 @@ export const PayrollProvider = ({ children }) => {
         UPDATE EMPLOYEE
      ========================= */
   const updateEmployee = async (updatedEmp) => {
+    const normalizedEmployee = normalizeEmployee(updatedEmp);
+
     try {
       const res = await fetch(
-        `${API}/employees/${updatedEmp.empId}`,
+        `${API}/employees/${normalizedEmployee.empId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(updatedEmp),
+          body: JSON.stringify(normalizedEmployee),
         }
       );
 
@@ -84,7 +96,7 @@ export const PayrollProvider = ({ children }) => {
       const data = await res.json();
 
       const updated = employees.map((emp) =>
-        emp.empId === updatedEmp.empId ? data : emp
+        emp.empId === normalizedEmployee.empId ? data : emp
       );
 
       setEmployees(updated);
@@ -94,7 +106,9 @@ export const PayrollProvider = ({ children }) => {
       console.warn("Backend down → update locally");
 
       const updated = employees.map((emp) =>
-        emp.empId === updatedEmp.empId ? updatedEmp : emp
+        emp.empId === normalizedEmployee.empId
+          ? normalizedEmployee
+          : emp
       );
 
       setEmployees(updated);
@@ -115,7 +129,6 @@ export const PayrollProvider = ({ children }) => {
       if (!res.ok) throw new Error("Delete failed");
 
       const updated = employees.filter((emp) => emp.empId !== id);
-
       setEmployees(updated);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
     } catch (err) {

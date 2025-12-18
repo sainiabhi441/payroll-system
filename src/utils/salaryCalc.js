@@ -1,4 +1,9 @@
-﻿export function calcGross(basic, desig) {
+﻿// src/utils/salaryCalc.js
+
+/* =========================
+   GROSS SALARY CALCULATION
+   ========================= */
+export function calcGross(basic, desig) {
   basic = Number(basic);
 
   const rules = {
@@ -20,5 +25,30 @@
 
   const gross = basic + hra + da - pf;
 
-  return { basic, hra, da, pf, gross };
+  return {
+    basic: Math.round(basic),
+    hra: Math.round(hra),
+    da: Math.round(da),
+    pf: Math.round(pf),
+    gross: Math.round(gross),
+  };
+}
+
+/* =========================
+   ATTENDANCE BASED SALARY
+   ========================= */
+export function calculateSalary(emp) {
+  const gross = Number(emp.gross);
+
+  const workingDays = emp.workingDays ?? 26;
+  const presentDays = emp.presentDays ?? workingDays;
+
+  const perDaySalary = gross / workingDays;
+  const finalSalary = perDaySalary * presentDays;
+
+  return {
+    gross,
+    perDaySalary: Math.round(perDaySalary),
+    finalSalary: Math.round(finalSalary),
+  };
 }

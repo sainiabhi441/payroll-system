@@ -4,6 +4,7 @@ import { PayrollProvider } from "./contexts/PayrollContext";
 import Header from "./components/Header";
 import EmployeeForm from "./components/EmployeeForm";
 import PayslipList from "./components/payroll/PayslipList";
+import PayrollSummary from "./components/summary/PayrollSummary";
 
 /* CSS */
 import "./index.css";   // global base styles
