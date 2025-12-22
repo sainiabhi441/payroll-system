@@ -2,15 +2,18 @@
 import React from "react";
 import jsPDF from "jspdf";
 import { usePayroll } from "../../contexts/PayrollContext";
-import { calculateSalary } from "../../utils/salaryCalc";
 
 export default function EmployeeCard({ emp }) {
   const { setEditEmployee, deleteEmployee } = usePayroll();
   if (!emp) return null;
 
-  const salary = calculateSalary(emp);
+  /* ✅ Attendance based salary */
+  const perDaySalary =
+    emp.workingDays > 0 ? emp.gross / emp.workingDays : 0;
 
-  // 📄 PDF Payslip Function
+  const finalSalary = Math.round(perDaySalary * emp.presentDays);
+
+  /* 📄 PDF Payslip */
   const downloadPayslip = () => {
     const doc = new jsPDF();
 
@@ -37,89 +40,83 @@ export default function EmployeeCard({ emp }) {
 
     doc.line(20, 118, 190, 118);
 
-    doc.text(`Gross Salary: ₹${salary.gross}`, 20, 128);
-
     doc.setFontSize(14);
-    doc.text(`Payable Salary: ₹${salary.finalSalary}`, 20, 140);
+    doc.text(`Gross Salary: ₹${emp.gross}`, 20, 130);
+    doc.text(`Payable Salary: ₹${finalSalary}`, 20, 142);
 
     doc.save(`Payslip_${emp.name}.pdf`);
   };
 
   return (
     <>
-      <style>
-        {`
-  .employee-card {
-    background: #f3f6fb;
-    border-radius: 16px;
-    padding: 16px 18px;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
-    width: 100%;
-  }
+      <style>{`
+        .employee-card {
+          background: #f3f6fb;
+          border-radius: 16px;
+          padding: 16px 18px;
+          box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+        }
 
-  .card-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-  }
+        .card-header {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 10px;
+        }
 
-  .emp-name {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 700;
-  }
+        .emp-name {
+          margin: 0;
+          font-size: 16px;
+          font-weight: 700;
+        }
 
-  .emp-id {
-    font-size: 12px;
-    color: #777;
-  }
+        .emp-id {
+          font-size: 12px;
+          color: #777;
+        }
 
-  .emp-role {
-    font-size: 13px;
-    color: #555;
-  }
+        .emp-role {
+          font-size: 13px;
+          color: #555;
+        }
 
-  .icon-btn {
-    background: #f1f3f5;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    padding: 4px 6px;
-    cursor: pointer;
-    margin-left: 6px;
-  }
+        .icon-btn {
+          background: #f1f3f5;
+          border: 1px solid #ddd;
+          border-radius: 6px;
+          padding: 4px 6px;
+          cursor: pointer;
+          margin-left: 6px;
+        }
 
-  .salary-list {
-    list-style: none;
-    padding: 0;
-    margin: 12px 0;
-  }
+        .salary-list {
+          list-style: none;
+          padding: 0;
+          margin: 12px 0;
+        }
 
-  .salary-list li {
-    font-size: 14px;
-    padding: 6px 0;
-    border-bottom: 1px solid #eee;
-  }
+        .salary-list li {
+          font-size: 14px;
+          padding: 6px 0;
+          border-bottom: 1px solid #eee;
+        }
 
-  .gross {
-    margin-top: 8px;
-    text-align: right;
-    font-weight: 700;
-    font-size: 15px;
-  }
+        .gross {
+          margin-top: 8px;
+          text-align: right;
+          font-weight: 700;
+        }
 
-  .download-btn {
-    margin-top: 10px;
-    width: 100%;
-    padding: 8px;
-    border-radius: 8px;
-    border: none;
-    background: #212529;
-    color: white;
-    font-size: 14px;
-    cursor: pointer;
-  }
-`}
-      </style>
+        .download-btn {
+          margin-top: 10px;
+          width: 100%;
+          padding: 8px;
+          border-radius: 8px;
+          border: none;
+          background: #212529;
+          color: white;
+          cursor: pointer;
+        }
+      `}</style>
 
       <div className="employee-card">
         <div className="card-header">
@@ -132,10 +129,7 @@ export default function EmployeeCard({ emp }) {
           </div>
 
           <div>
-            <button
-              className="icon-btn"
-              onClick={() => setEditEmployee(emp)}
-            >
+            <button className="icon-btn" onClick={() => setEditEmployee(emp)}>
               ✏️
             </button>
             <button
@@ -160,10 +154,9 @@ export default function EmployeeCard({ emp }) {
         </ul>
 
         <div className="gross">
-          Payable Salary: ₹{salary.finalSalary}
+          Payable Salary: ₹{finalSalary}
         </div>
 
-        {/* 📄 Download Button */}
         <button className="download-btn" onClick={downloadPayslip}>
           📄 Download Payslip
         </button>
