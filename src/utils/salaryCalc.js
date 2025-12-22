@@ -4,7 +4,7 @@
    GROSS SALARY CALCULATION
    ========================= */
 export function calcGross(basic, desig) {
-  basic = Number(basic);
+  const base = Number(basic) || 0;
 
   const rules = {
     je: { hra: 0.20, da: 0.10, pf: 0.12 },
@@ -19,14 +19,14 @@ export function calcGross(basic, desig) {
 
   const r = rules[desig] || rules.je;
 
-  const hra = basic * r.hra;
-  const da = basic * r.da;
-  const pf = basic * r.pf;
+  const hra = base * r.hra;
+  const da = base * r.da;
+  const pf = base * r.pf;
 
-  const gross = basic + hra + da - pf;
+  const gross = base + hra + da - pf;
 
   return {
-    basic: Math.round(basic),
+    basic: Math.round(base),
     hra: Math.round(hra),
     da: Math.round(da),
     pf: Math.round(pf),
@@ -38,16 +38,22 @@ export function calcGross(basic, desig) {
    ATTENDANCE BASED SALARY
    ========================= */
 export function calculateSalary(emp) {
-  const gross = Number(emp.gross);
+  // 🔒 SAFE NUMBER CASTING
+  const gross = Number(emp?.gross) || 0;
+  const workingDays = Number(emp?.workingDays) || 26;
+  const presentDays =
+    Number(emp?.presentDays) || workingDays;
 
-  const workingDays = emp.workingDays ?? 26;
-  const presentDays = emp.presentDays ?? workingDays;
+  // 🛡️ DIVISION SAFETY
+  const perDaySalary =
+    workingDays > 0 ? gross / workingDays : 0;
 
-  const perDaySalary = gross / workingDays;
   const finalSalary = perDaySalary * presentDays;
 
   return {
-    gross,
+    gross: Math.round(gross),
+    workingDays,
+    presentDays,
     perDaySalary: Math.round(perDaySalary),
     finalSalary: Math.round(finalSalary),
   };

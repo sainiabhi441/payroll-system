@@ -7,8 +7,8 @@ import PayslipList from "./components/payroll/PayslipList";
 import PayrollSummary from "./components/summary/PayrollSummary";
 
 /* CSS */
-import "./index.css";   // global base styles
-import "./App.css";     // layout + header styles
+import "./index.css";
+import "./App.css";
 
 export default function App() {
   return (
@@ -17,6 +17,9 @@ export default function App() {
 
         {/* 🔥 TOP HEADER STRIP */}
         <Header />
+
+        {/* 📊 PAYROLL SUMMARY (ADMIN VIEW) */}
+        <PayrollSummary />
 
         {/* MAIN LAYOUT */}
         <div className="layout">
@@ -27,8 +30,6 @@ export default function App() {
 
           {/* RIGHT SIDE : LIST */}
           <main className="right-panel">
-
-            {/* ✅ FIXED PAYSLIP HEADER */}
             <div className="payslip-header">
               Employee Payslips
             </div>
