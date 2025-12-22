@@ -1,4 +1,3 @@
-// src/components/payroll/EmployeeCard.jsx
 import React from "react";
 import jsPDF from "jspdf";
 import { usePayroll } from "../../contexts/PayrollContext";
@@ -7,13 +6,21 @@ export default function EmployeeCard({ emp }) {
   const { setEditEmployee, deleteEmployee } = usePayroll();
   if (!emp) return null;
 
-  /* ✅ Attendance based salary */
+  /* =========================
+     ✅ SAFE NUMBER CASTING
+  ========================= */
+  const workingDays = Number(emp.workingDays || 0);
+  const presentDays = Number(emp.presentDays || 0);
+  const gross = Number(emp.gross || 0);
+
   const perDaySalary =
-    emp.workingDays > 0 ? emp.gross / emp.workingDays : 0;
+    workingDays > 0 ? gross / workingDays : 0;
 
-  const finalSalary = Math.round(perDaySalary * emp.presentDays);
+  const finalSalary = Math.round(perDaySalary * presentDays);
 
-  /* 📄 PDF Payslip */
+  /* =========================
+     📄 PDF PAYSLIP
+  ========================= */
   const downloadPayslip = () => {
     const doc = new jsPDF();
 
@@ -28,8 +35,8 @@ export default function EmployeeCard({ emp }) {
 
     doc.line(20, 60, 190, 60);
 
-    doc.text(`Working Days: ${emp.workingDays}`, 20, 70);
-    doc.text(`Present Days: ${emp.presentDays}`, 20, 77);
+    doc.text(`Working Days: ${workingDays}`, 20, 70);
+    doc.text(`Present Days: ${presentDays}`, 20, 77);
 
     doc.line(20, 82, 190, 82);
 
@@ -41,7 +48,7 @@ export default function EmployeeCard({ emp }) {
     doc.line(20, 118, 190, 118);
 
     doc.setFontSize(14);
-    doc.text(`Gross Salary: ₹${emp.gross}`, 20, 130);
+    doc.text(`Gross Salary: ₹${gross}`, 20, 130);
     doc.text(`Payable Salary: ₹${finalSalary}`, 20, 142);
 
     doc.save(`Payslip_${emp.name}.pdf`);
@@ -104,6 +111,7 @@ export default function EmployeeCard({ emp }) {
           margin-top: 8px;
           text-align: right;
           font-weight: 700;
+          font-size: 15px;
         }
 
         .download-btn {
@@ -129,7 +137,10 @@ export default function EmployeeCard({ emp }) {
           </div>
 
           <div>
-            <button className="icon-btn" onClick={() => setEditEmployee(emp)}>
+            <button
+              className="icon-btn"
+              onClick={() => setEditEmployee(emp)}
+            >
               ✏️
             </button>
             <button
@@ -149,8 +160,8 @@ export default function EmployeeCard({ emp }) {
           <li>HRA: ₹{emp.hra}</li>
           <li>DA: ₹{emp.da}</li>
           <li>PF: ₹{emp.pf}</li>
-          <li>Working Days: {emp.workingDays}</li>
-          <li>Present Days: {emp.presentDays}</li>
+          <li>Working Days: {workingDays}</li>
+          <li>Present Days: {presentDays}</li>
         </ul>
 
         <div className="gross">
