@@ -13,12 +13,15 @@ export default function EmployeeForm() {
   const { addEmployee, updateEmployee, editEmployee, setEditEmployee } =
     usePayroll();
 
+  /* ======================
+      STATES
+     ====================== */
   const [name, setName] = useState("");
   const [department, setDepartment] = useState("Production");
   const [designation, setDesignation] = useState("je");
   const [basic, setBasic] = useState("");
 
-  // 🆕 Attendance states
+  // Attendance
   const [workingDays, setWorkingDays] = useState(26);
   const [presentDays, setPresentDays] = useState(26);
 
@@ -55,7 +58,7 @@ export default function EmployeeForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // ✅ Validation (Company Rule)
+    // Validation
     if (presentDays > workingDays) {
       alert("Present Days cannot be more than Working Days");
       return;
@@ -66,8 +69,8 @@ export default function EmployeeForm() {
       department,
       designation,
       basic: Number(basic),
-      workingDays,
-      presentDays,
+      workingDays: Number(workingDays),
+      presentDays: Number(presentDays),
       ...calcGross(basic, designation),
     };
 
@@ -78,30 +81,31 @@ export default function EmployeeForm() {
       addEmployee(emp);
     }
 
-    // Reset
+    // Reset form
     setName("");
-    setBasic("");
     setDepartment("Production");
     setDesignation("je");
+    setBasic("");
     setWorkingDays(26);
     setPresentDays(26);
     setEditEmployee(null);
   };
 
+  /* ======================
+      UI
+     ====================== */
   return (
     <>
-      {/* 🔹 CSS INSIDE COMPONENT */}
-      <style>
-        {`
+      <style>{`
         .employee-form {
-          background: #ffffff;
+          background: #fff;
           border-radius: 16px;
           padding: 22px;
           box-shadow: 0 6px 16px rgba(0,0,0,0.08);
         }
 
         .form-title {
-          font-size: 24px;
+          font-size: 22px;
           font-weight: 700;
           margin-bottom: 18px;
         }
@@ -118,7 +122,6 @@ export default function EmployeeForm() {
         }
 
         .field label {
-          font-size: 16px;
           font-weight: 600;
           margin-bottom: 6px;
         }
@@ -133,7 +136,7 @@ export default function EmployeeForm() {
 
         .field-row {
           display: flex;
-          gap: 18px;
+          gap: 16px;
         }
 
         .field-row .field {
@@ -153,14 +156,13 @@ export default function EmployeeForm() {
         }
 
         .preview-box {
-          margin-top: 22px;
-          padding: 16px;
+          margin-top: 20px;
+          padding: 14px;
           background: #f8f9fa;
           border-radius: 12px;
           border: 1px solid #e0e0e0;
         }
-      `}
-      </style>
+      `}</style>
 
       <div className="employee-form">
         <h3 className="form-title">
@@ -170,7 +172,11 @@ export default function EmployeeForm() {
         <form onSubmit={handleSubmit} className="form-body">
           <div className="field">
             <label>Name</label>
-            <input value={name} onChange={(e) => setName(e.target.value)} required />
+            <input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
           </div>
 
           <div className="field-row">
@@ -196,7 +202,9 @@ export default function EmployeeForm() {
                 onChange={(e) => setDesignation(e.target.value)}
               >
                 {designationMap[department].map((d) => (
-                  <option key={d}>{d.toUpperCase()}</option>
+                  <option key={d} value={d}>
+                    {d.toUpperCase()}
+                  </option>
                 ))}
               </select>
             </div>
@@ -212,14 +220,13 @@ export default function EmployeeForm() {
             />
           </div>
 
-          {/* 🆕 Attendance Fields */}
           <div className="field-row">
             <div className="field">
               <label>Working Days</label>
               <input
                 type="number"
                 value={workingDays}
-                onChange={(e) => setWorkingDays(Number(e.target.value))}
+                onChange={(e) => setWorkingDays(e.target.value)}
               />
             </div>
 
@@ -228,7 +235,7 @@ export default function EmployeeForm() {
               <input
                 type="number"
                 value={presentDays}
-                onChange={(e) => setPresentDays(Number(e.target.value))}
+                onChange={(e) => setPresentDays(e.target.value)}
               />
             </div>
           </div>
@@ -240,7 +247,6 @@ export default function EmployeeForm() {
 
         {preview && (
           <div className="preview-box">
-            <h4>Payslip Preview</h4>
             <p>Basic: ₹{preview.basic}</p>
             <p>HRA: ₹{preview.hra}</p>
             <p>DA: ₹{preview.da}</p>
