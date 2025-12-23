@@ -68,7 +68,8 @@ export default function EmployeeForm() {
       name,
       department,
       designation,
-      basic: Number(basic),
+      basicSalary: Number(basic),   // ✅ EXACT KEY
+
       workingDays: Number(workingDays),
       presentDays: Number(presentDays),
       ...calcGross(basic, designation),
