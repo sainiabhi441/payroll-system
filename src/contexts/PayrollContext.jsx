@@ -2,7 +2,8 @@
 
 const PayrollContext = createContext();
 
-const API = import.meta.env.VITE_API_URL;
+const API = "https://payroll-system-backend-oqx4.onrender.com/api";
+
 
 export const PayrollProvider = ({ children }) => {
   const [employees, setEmployees] = useState([]);
