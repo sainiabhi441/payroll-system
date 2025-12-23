@@ -3,11 +3,12 @@
 const PayrollContext = createContext();
 
 const API = import.meta.env.VITE_API_URL;
-const STORAGE_KEY = "payroll_employees";
 
 export const PayrollProvider = ({ children }) => {
   const [employees, setEmployees] = useState([]);
   const [editEmployee, setEditEmployee] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   /* =========================
         LOAD EMPLOYEES
@@ -18,17 +19,20 @@ export const PayrollProvider = ({ children }) => {
 
   const loadEmployees = async () => {
     try {
+      setLoading(true);
+      setError(null);
+
       const res = await fetch(`${API}/employees`);
-      if (!res.ok) throw new Error("Backend not available");
+      if (!res.ok) throw new Error("Failed to load employees");
 
       const data = await res.json();
       setEmployees(data);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     } catch (err) {
-      console.warn("Backend down → loading from localStorage");
-
-      const localData = localStorage.getItem(STORAGE_KEY);
-      setEmployees(localData ? JSON.parse(localData) : []);
+      console.error(err);
+      setError("Server unavailable. Employees not loaded.");
+      setEmployees([]);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -45,33 +49,22 @@ export const PayrollProvider = ({ children }) => {
         ADD EMPLOYEE
      ========================= */
   const addEmployee = async (employee) => {
-    const normalizedEmployee = normalizeEmployee(employee);
-
     try {
+      const normalized = normalizeEmployee(employee);
+
       const res = await fetch(`${API}/employees`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(normalizedEmployee),
+        body: JSON.stringify(normalized),
       });
 
       if (!res.ok) throw new Error("Add failed");
 
-      const data = await res.json();
-      const updated = [data, ...employees];
-
-      setEmployees(updated);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+      const savedEmployee = await res.json();
+      setEmployees((prev) => [savedEmployee, ...prev]);
     } catch (err) {
-      console.warn("Backend down → add locally");
-
-      const localEmp = {
-        ...normalizedEmployee,
-        empId: Date.now(),
-      };
-
-      const updated = [localEmp, ...employees];
-      setEmployees(updated);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+      console.error(err);
+      alert("Employee add failed. Server not responding.");
     }
   };
 
@@ -79,41 +72,30 @@ export const PayrollProvider = ({ children }) => {
         UPDATE EMPLOYEE
      ========================= */
   const updateEmployee = async (updatedEmp) => {
-    const normalizedEmployee = normalizeEmployee(updatedEmp);
-
     try {
+      const normalized = normalizeEmployee(updatedEmp);
+
       const res = await fetch(
-        `${API}/employees/${normalizedEmployee.empId}`,
+        `${API}/employees/${normalized._id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(normalizedEmployee),
+          body: JSON.stringify(normalized),
         }
       );
 
       if (!res.ok) throw new Error("Update failed");
 
-      const data = await res.json();
+      const saved = await res.json();
 
-      const updated = employees.map((emp) =>
-        emp.empId === normalizedEmployee.empId ? data : emp
+      setEmployees((prev) =>
+        prev.map((emp) => (emp._id === saved._id ? saved : emp))
       );
 
-      setEmployees(updated);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
       setEditEmployee(null);
     } catch (err) {
-      console.warn("Backend down → update locally");
-
-      const updated = employees.map((emp) =>
-        emp.empId === normalizedEmployee.empId
-          ? normalizedEmployee
-          : emp
-      );
-
-      setEmployees(updated);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-      setEditEmployee(null);
+      console.error(err);
+      alert("Employee update failed.");
     }
   };
 
@@ -128,15 +110,10 @@ export const PayrollProvider = ({ children }) => {
 
       if (!res.ok) throw new Error("Delete failed");
 
-      const updated = employees.filter((emp) => emp.empId !== id);
-      setEmployees(updated);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+      setEmployees((prev) => prev.filter((emp) => emp._id !== id));
     } catch (err) {
-      console.warn("Backend down → delete locally");
-
-      const updated = employees.filter((emp) => emp.empId !== id);
-      setEmployees(updated);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+      console.error(err);
+      alert("Employee delete failed.");
     }
   };
 
@@ -144,11 +121,14 @@ export const PayrollProvider = ({ children }) => {
     <PayrollContext.Provider
       value={{
         employees,
+        loading,
+        error,
         addEmployee,
         updateEmployee,
         deleteEmployee,
         editEmployee,
         setEditEmployee,
+        reloadEmployees: loadEmployees,
       }}
     >
       {children}
