@@ -4,7 +4,6 @@ const PayrollContext = createContext();
 
 const API = "https://payroll-system-backend-oqx4.onrender.com/api";
 
-
 export const PayrollProvider = ({ children }) => {
   const [employees, setEmployees] = useState([]);
   const [editEmployee, setEditEmployee] = useState(null);
@@ -70,14 +69,14 @@ export const PayrollProvider = ({ children }) => {
   };
 
   /* =========================
-        UPDATE EMPLOYEE
+        UPDATE EMPLOYEE ✅ FIXED
      ========================= */
   const updateEmployee = async (updatedEmp) => {
     try {
       const normalized = normalizeEmployee(updatedEmp);
 
       const res = await fetch(
-        `${API}/employees/${normalized._id}`,
+        `${API}/employees/${normalized.empId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -90,7 +89,9 @@ export const PayrollProvider = ({ children }) => {
       const saved = await res.json();
 
       setEmployees((prev) =>
-        prev.map((emp) => (emp._id === saved._id ? saved : emp))
+        prev.map((emp) =>
+          emp.empId === saved.empId ? saved : emp
+        )
       );
 
       setEditEmployee(null);
@@ -101,17 +102,19 @@ export const PayrollProvider = ({ children }) => {
   };
 
   /* =========================
-        DELETE EMPLOYEE
+        DELETE EMPLOYEE ✅ FIXED
      ========================= */
-  const deleteEmployee = async (id) => {
+  const deleteEmployee = async (empId) => {
     try {
-      const res = await fetch(`${API}/employees/${id}`, {
+      const res = await fetch(`${API}/employees/${empId}`, {
         method: "DELETE",
       });
 
       if (!res.ok) throw new Error("Delete failed");
 
-      setEmployees((prev) => prev.filter((emp) => emp._id !== id));
+      setEmployees((prev) =>
+        prev.filter((emp) => emp.empId !== empId)
+      );
     } catch (err) {
       console.error(err);
       alert("Employee delete failed.");
