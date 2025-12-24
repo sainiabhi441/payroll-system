@@ -6,9 +6,8 @@ export default function PayrollSummary() {
   const { employees } = usePayroll();
 
   /* =========================
-     CALCULATIONS (SAFE)
+     CALCULATIONS
   ========================= */
-
   const totalEmployees = employees.length;
 
   const totalPayroll = employees.reduce(
@@ -33,73 +32,58 @@ export default function PayrollSummary() {
     <>
       <style>{`
         .payroll-summary {
-          margin-bottom: 24px;
-        }
-
-        .payroll-summary h3 {
-          font-size: 20px;
-          font-weight: 700;
-          margin-bottom: 14px;
-        }
-
-        /* TOP SUMMARY GRID */
-        .summary-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-          gap: 16px;
           margin-bottom: 20px;
         }
 
-        /* CARD */
+        /* FORCE SINGLE LINE */
+        .summary-grid {
+          display: flex;
+          gap: 12px;
+          flex-wrap: nowrap;
+          overflow-x: auto;
+        }
+
+        /* SMALL CARD */
         .summary-card {
           background: #ffffff;
-          border-radius: 14px;
-          padding: 16px;
-          box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+          border-radius: 12px;
+          padding: 10px 12px;   /* 👈 छोटा card */
+          min-width: 180px;
+          box-shadow: 0 4px 10px rgba(0,0,0,0.08);
           text-align: center;
         }
 
+        /* TEXT BIGGER */
         .summary-card p {
-          font-size: 14px;
-          color: #6c757d;
-          margin-bottom: 6px;
-          font-weight: 600;
+          font-size: 16px;     /* 👈 text बड़ा */
+          font-weight: 700;
+          color: #495057;
+          margin-bottom: 4px;
         }
 
+        /* NUMBER SAME */
         .summary-card h2 {
-          font-size: 24px;
+          font-size: 24px;     /* ❌ number unchanged */
           font-weight: 800;
           margin: 0;
           color: #212529;
         }
 
         /* DEPARTMENT CARD */
-        .summary-card.full-width {
+        .dept-card {
           text-align: left;
         }
 
         .dept-row {
           display: flex;
           justify-content: space-between;
-          padding: 6px 0;
-          font-weight: 600;
-          border-bottom: 1px solid #eee;
-        }
-
-        .dept-row:last-child {
-          border-bottom: none;
-        }
-
-        .empty-text {
-          color: #999;
+          font-weight: 700;
+          font-size: 15px;
           margin-top: 6px;
         }
       `}</style>
 
       <div className="payroll-summary">
-        <h3>📊 Payroll Summary</h3>
-
-        {/* TOP CARDS */}
         <div className="summary-grid">
           <div className="summary-card">
             <p>Total Employees</p>
@@ -115,22 +99,18 @@ export default function PayrollSummary() {
             <p>Highest Salary</p>
             <h2>₹{highestSalary}</h2>
           </div>
-        </div>
 
-        {/* DEPARTMENT WISE */}
-        <div className="summary-card full-width">
-          <p>Department Wise Employees</p>
+          {/* DEPARTMENT SAME LINE */}
+          <div className="summary-card dept-card">
+            <p>Department</p>
 
-          {Object.keys(departmentCount).length === 0 && (
-            <div className="empty-text">No employees added yet</div>
-          )}
-
-          {Object.entries(departmentCount).map(([dept, count]) => (
-            <div key={dept} className="dept-row">
-              <span>{dept}</span>
-              <span>{count}</span>
-            </div>
-          ))}
+            {Object.entries(departmentCount).map(([dept, count]) => (
+              <div key={dept} className="dept-row">
+                <span>{dept}</span>
+                <span>{count}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </>
