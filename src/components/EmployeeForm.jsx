@@ -21,9 +21,9 @@ export default function EmployeeForm() {
   const [designation, setDesignation] = useState("je");
   const [basic, setBasic] = useState("");
 
-  // Attendance
-  const [workingDays, setWorkingDays] = useState(26);
-  const [presentDays, setPresentDays] = useState(26);
+  // ✅ Attendance (EMPTY by default)
+  const [workingDays, setWorkingDays] = useState("");
+  const [presentDays, setPresentDays] = useState("");
 
   const [preview, setPreview] = useState(null);
 
@@ -36,8 +36,16 @@ export default function EmployeeForm() {
       setDepartment(editEmployee.department || "Production");
       setDesignation(editEmployee.designation || "je");
       setBasic(editEmployee.basic || "");
-      setWorkingDays(editEmployee.workingDays ?? 26);
-      setPresentDays(editEmployee.presentDays ?? 26);
+      setWorkingDays(
+        editEmployee.workingDays !== undefined
+          ? String(editEmployee.workingDays)
+          : ""
+      );
+      setPresentDays(
+        editEmployee.presentDays !== undefined
+          ? String(editEmployee.presentDays)
+          : ""
+      );
     }
   }, [editEmployee]);
 
@@ -58,8 +66,11 @@ export default function EmployeeForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Validation
-    if (presentDays > workingDays) {
+    if (
+      workingDays !== "" &&
+      presentDays !== "" &&
+      Number(presentDays) > Number(workingDays)
+    ) {
       alert("Present Days cannot be more than Working Days");
       return;
     }
@@ -68,11 +79,13 @@ export default function EmployeeForm() {
       name,
       department,
       designation,
-      basicSalary: Number(basic),   // ✅ EXACT KEY
+      basic: Number(basic),
 
-      workingDays: Number(workingDays),
-      presentDays: Number(presentDays),
-      ...calcGross(basic, designation),
+      // ✅ ONLY send if user filled
+      workingDays:
+        workingDays === "" ? undefined : Number(workingDays),
+      presentDays:
+        presentDays === "" ? undefined : Number(presentDays),
     };
 
     if (editEmployee) {
@@ -82,13 +95,13 @@ export default function EmployeeForm() {
       addEmployee(emp);
     }
 
-    // Reset form
+    // ✅ REAL RESET (EMPTY)
     setName("");
     setDepartment("Production");
     setDesignation("je");
     setBasic("");
-    setWorkingDays(26);
-    setPresentDays(26);
+    setWorkingDays("");
+    setPresentDays("");
     setEditEmployee(null);
   };
 
@@ -97,74 +110,6 @@ export default function EmployeeForm() {
      ====================== */
   return (
     <>
-      <style>{`
-        .employee-form {
-          background: #fff;
-          border-radius: 16px;
-          padding: 22px;
-          box-shadow: 0 6px 16px rgba(0,0,0,0.08);
-        }
-
-        .form-title {
-          font-size: 22px;
-          font-weight: 700;
-          margin-bottom: 18px;
-        }
-
-        .form-body {
-          display: flex;
-          flex-direction: column;
-          gap: 16px;
-        }
-
-        .field {
-          display: flex;
-          flex-direction: column;
-        }
-
-        .field label {
-          font-weight: 600;
-          margin-bottom: 6px;
-        }
-
-        .field input,
-        .field select {
-          padding: 10px;
-          border-radius: 8px;
-          border: 1px solid #ccc;
-          font-size: 15px;
-        }
-
-        .field-row {
-          display: flex;
-          gap: 16px;
-        }
-
-        .field-row .field {
-          flex: 1;
-        }
-
-        .submit-btn {
-          margin-top: 10px;
-          padding: 12px;
-          border-radius: 10px;
-          border: none;
-          background: #212529;
-          color: white;
-          font-size: 16px;
-          font-weight: 600;
-          cursor: pointer;
-        }
-
-        .preview-box {
-          margin-top: 20px;
-          padding: 14px;
-          background: #f8f9fa;
-          border-radius: 12px;
-          border: 1px solid #e0e0e0;
-        }
-      `}</style>
-
       <div className="employee-form">
         <h3 className="form-title">
           {editEmployee ? "Edit Employee" : "Add New Employee"}
@@ -228,6 +173,7 @@ export default function EmployeeForm() {
                 type="number"
                 value={workingDays}
                 onChange={(e) => setWorkingDays(e.target.value)}
+                placeholder="e.g. 26"
               />
             </div>
 
@@ -237,6 +183,7 @@ export default function EmployeeForm() {
                 type="number"
                 value={presentDays}
                 onChange={(e) => setPresentDays(e.target.value)}
+                placeholder="e.g. 24"
               />
             </div>
           </div>
