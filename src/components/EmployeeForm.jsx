@@ -36,11 +36,13 @@ export default function EmployeeForm() {
       setDepartment(editEmployee.department || "Production");
       setDesignation(editEmployee.designation || "je");
       setBasic(editEmployee.basic || "");
+
       setWorkingDays(
         editEmployee.workingDays !== undefined
           ? String(editEmployee.workingDays)
           : ""
       );
+
       setPresentDays(
         editEmployee.presentDays !== undefined
           ? String(editEmployee.presentDays)
@@ -81,7 +83,7 @@ export default function EmployeeForm() {
       designation,
       basic: Number(basic),
 
-      // ✅ ONLY send if user filled
+      // ✅ Send only if user filled
       workingDays:
         workingDays === "" ? undefined : Number(workingDays),
       presentDays:
@@ -95,7 +97,7 @@ export default function EmployeeForm() {
       addEmployee(emp);
     }
 
-    // ✅ REAL RESET (EMPTY)
+    // ✅ RESET (same UI, empty attendance)
     setName("");
     setDepartment("Production");
     setDesignation("je");
@@ -106,10 +108,78 @@ export default function EmployeeForm() {
   };
 
   /* ======================
-      UI
+      UI (UNCHANGED)
      ====================== */
   return (
     <>
+      <style>{`
+        .employee-form {
+          background: #fff;
+          border-radius: 16px;
+          padding: 22px;
+          box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+        }
+
+        .form-title {
+          font-size: 22px;
+          font-weight: 700;
+          margin-bottom: 18px;
+        }
+
+        .form-body {
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+        }
+
+        .field {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .field label {
+          font-weight: 600;
+          margin-bottom: 6px;
+        }
+
+        .field input,
+        .field select {
+          padding: 10px;
+          border-radius: 8px;
+          border: 1px solid #ccc;
+          font-size: 15px;
+        }
+
+        .field-row {
+          display: flex;
+          gap: 16px;
+        }
+
+        .field-row .field {
+          flex: 1;
+        }
+
+        .submit-btn {
+          margin-top: 10px;
+          padding: 12px;
+          border-radius: 10px;
+          border: none;
+          background: #212529;
+          color: white;
+          font-size: 16px;
+          font-weight: 600;
+          cursor: pointer;
+        }
+
+        .preview-box {
+          margin-top: 20px;
+          padding: 14px;
+          background: #f8f9fa;
+          border-radius: 12px;
+          border: 1px solid #e0e0e0;
+        }
+      `}</style>
+
       <div className="employee-form">
         <h3 className="form-title">
           {editEmployee ? "Edit Employee" : "Add New Employee"}
