@@ -1,65 +1,138 @@
 // src/components/summary/PayrollSummary.jsx
 import React from "react";
 import { usePayroll } from "../../contexts/PayrollContext";
-import { calculateSalary } from "../../utils/salaryCalc";
 
 export default function PayrollSummary() {
   const { employees } = usePayroll();
 
-  // Total Employees
+  /* =========================
+     CALCULATIONS (SAFE)
+  ========================= */
+
   const totalEmployees = employees.length;
 
-  // Calculations
-  let totalPayroll = 0;
-  let highestSalary = 0;
-  const departmentCount = {};
+  const totalPayroll = employees.reduce(
+    (sum, emp) => sum + (emp.gross || 0),
+    0
+  );
 
-  employees.forEach((emp) => {
-    const salary = calculateSalary(emp);
+  const highestSalary =
+    employees.length > 0
+      ? Math.max(...employees.map((e) => e.gross || 0))
+      : 0;
 
-    totalPayroll += salary.finalSalary;
-    highestSalary = Math.max(highestSalary, salary.finalSalary);
+  const departmentCount = employees.reduce((acc, emp) => {
+    acc[emp.department] = (acc[emp.department] || 0) + 1;
+    return acc;
+  }, {});
 
-    departmentCount[emp.department] =
-      (departmentCount[emp.department] || 0) + 1;
-  });
-
+  /* =========================
+     UI
+  ========================= */
   return (
-    <div className="payroll-summary">
-      <h3>📊 Payroll Summary</h3>
+    <>
+      <style>{`
+        .payroll-summary {
+          margin-bottom: 24px;
+        }
 
-      {/* TOP SUMMARY CARDS */}
-      <div className="summary-grid">
-        <div className="summary-card">
-          <p>Total Employees</p>
-          <h2>{totalEmployees}</h2>
-        </div>
+        .payroll-summary h3 {
+          font-size: 20px;
+          font-weight: 700;
+          margin-bottom: 14px;
+        }
 
-        <div className="summary-card">
-          <p>Total Payroll</p>
-          <h2>₹{totalPayroll}</h2>
-        </div>
+        /* TOP SUMMARY GRID */
+        .summary-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+          gap: 16px;
+          margin-bottom: 20px;
+        }
 
-        <div className="summary-card">
-          <p>Highest Salary</p>
-          <h2>₹{highestSalary}</h2>
-        </div>
-      </div>
+        /* CARD */
+        .summary-card {
+          background: #ffffff;
+          border-radius: 14px;
+          padding: 16px;
+          box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+          text-align: center;
+        }
 
-      {/* DEPARTMENT WISE COUNT */}
-      <div className="summary-card full-width">
-        <p>Department Wise Employees</p>
+        .summary-card p {
+          font-size: 14px;
+          color: #6c757d;
+          margin-bottom: 6px;
+          font-weight: 600;
+        }
 
-        {Object.keys(departmentCount).length === 0 && (
-          <p>No employees added yet</p>
-        )}
+        .summary-card h2 {
+          font-size: 24px;
+          font-weight: 800;
+          margin: 0;
+          color: #212529;
+        }
 
-        {Object.keys(departmentCount).map((dept) => (
-          <div key={dept}>
-            {dept} : {departmentCount[dept]}
+        /* DEPARTMENT CARD */
+        .summary-card.full-width {
+          text-align: left;
+        }
+
+        .dept-row {
+          display: flex;
+          justify-content: space-between;
+          padding: 6px 0;
+          font-weight: 600;
+          border-bottom: 1px solid #eee;
+        }
+
+        .dept-row:last-child {
+          border-bottom: none;
+        }
+
+        .empty-text {
+          color: #999;
+          margin-top: 6px;
+        }
+      `}</style>
+
+      <div className="payroll-summary">
+        <h3>📊 Payroll Summary</h3>
+
+        {/* TOP CARDS */}
+        <div className="summary-grid">
+          <div className="summary-card">
+            <p>Total Employees</p>
+            <h2>{totalEmployees}</h2>
           </div>
-        ))}
+
+          <div className="summary-card">
+            <p>Total Payroll</p>
+            <h2>₹{totalPayroll}</h2>
+          </div>
+
+          <div className="summary-card">
+            <p>Highest Salary</p>
+            <h2>₹{highestSalary}</h2>
+          </div>
+        </div>
+
+        {/* DEPARTMENT WISE */}
+        <div className="summary-card full-width">
+          <p>Department Wise Employees</p>
+
+          {Object.keys(departmentCount).length === 0 && (
+            <div className="empty-text">No employees added yet</div>
+          )}
+
+          {Object.entries(departmentCount).map(([dept, count]) => (
+            <div key={dept} className="dept-row">
+              <span>{dept}</span>
+              <span>{count}</span>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
