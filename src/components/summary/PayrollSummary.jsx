@@ -43,12 +43,16 @@ export default function PayrollSummary() {
 
   const highestPayableEmp =
     payableList.length > 0
-      ? payableList.reduce((max, e) => (e.payable > max.payable ? e : max))
+      ? payableList.reduce((max, e) =>
+          e.payable > max.payable ? e : max
+        )
       : null;
 
   const lowestPayableEmp =
     payableList.length > 0
-      ? payableList.reduce((min, e) => (e.payable < min.payable ? e : min))
+      ? payableList.reduce((min, e) =>
+          e.payable < min.payable ? e : min
+        )
       : null;
 
   const averagePayable =
@@ -126,8 +130,18 @@ export default function PayrollSummary() {
         .dept-row {
           display: flex;
           justify-content: space-between;
+          align-items: center;
           font-weight: 700;
           margin-top: 6px;
+        }
+
+        .dept-name {
+          padding-right: 16px;   /* 👈 spacing fix */
+        }
+
+        .dept-count {
+          min-width: 20px;
+          text-align: right;
         }
       `}</style>
 
@@ -173,14 +187,19 @@ export default function PayrollSummary() {
             <h2>₹{averagePayable}</h2>
           </div>
 
+          {/* ✅ FINAL DEPARTMENT FIX */}
           <div className="summary-card dept-card">
             <p>Department</p>
-            {Object.entries(departmentCount).map(([dept, count]) => (
-              <div key={dept} className="dept-row">
-                <span>{dept}</span>
-                <span>{count}</span>
-              </div>
-            ))}
+            {Object.entries(departmentCount).map(
+              ([dept, count], index) => (
+                <div key={dept} className="dept-row">
+                  <span className="dept-name">
+                    {index + 1}. {dept}
+                  </span>
+                  <span className="dept-count">{count}</span>
+                </div>
+              )
+            )}
           </div>
         </div>
       </div>
