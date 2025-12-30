@@ -26,7 +26,7 @@ export default function PayrollSummary() {
   }, {});
 
   /* =========================
-     PAYABLE SALARY LOGIC ✅
+     PAYABLE SALARY LOGIC
   ========================= */
 
   const payableList = employees.map((emp) => {
@@ -43,22 +43,18 @@ export default function PayrollSummary() {
 
   const highestPayableEmp =
     payableList.length > 0
-      ? payableList.reduce((max, emp) =>
-          emp.payable > max.payable ? emp : max
-        )
+      ? payableList.reduce((max, e) => (e.payable > max.payable ? e : max))
       : null;
 
   const lowestPayableEmp =
     payableList.length > 0
-      ? payableList.reduce((min, emp) =>
-          emp.payable < min.payable ? emp : min
-        )
+      ? payableList.reduce((min, e) => (e.payable < min.payable ? e : min))
       : null;
 
   const averagePayable =
     payableList.length > 0
       ? Math.round(
-          payableList.reduce((sum, emp) => sum + emp.payable, 0) /
+          payableList.reduce((s, e) => s + e.payable, 0) /
             payableList.length
         )
       : 0;
@@ -81,18 +77,17 @@ export default function PayrollSummary() {
         }
 
         .summary-card {
-          background: #ffffff;
-          border-radius: 12px;
-          padding: 10px 12px;
-          min-width: 180px;
-          box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+          border-radius: 14px;
+          padding: 12px;
+          min-width: 190px;
           text-align: center;
+          box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+          background: #fff;
         }
 
         .summary-card p {
           font-size: 16px;
           font-weight: 700;
-          color: #495057;
           margin-bottom: 4px;
         }
 
@@ -100,7 +95,28 @@ export default function PayrollSummary() {
           font-size: 24px;
           font-weight: 800;
           margin: 0;
-          color: #212529;
+        }
+
+        /* FULL COLOR PAYABLE CARDS */
+        .payable-high {
+          background: linear-gradient(135deg, #d4edda, #b7e4c7);
+          color: #155724;
+        }
+
+        .payable-low {
+          background: linear-gradient(135deg, #f8d7da, #f1b0b7);
+          color: #721c24;
+        }
+
+        .payable-avg {
+          background: linear-gradient(135deg, #d6e4ff, #b6ccfe);
+          color: #102a71;
+        }
+
+        .emp-name {
+          font-size: 14px;
+          font-weight: 700;
+          margin-top: 6px;
         }
 
         .dept-card {
@@ -111,27 +127,7 @@ export default function PayrollSummary() {
           display: flex;
           justify-content: space-between;
           font-weight: 700;
-          font-size: 15px;
           margin-top: 6px;
-        }
-
-        /* PAYABLE CARDS */
-        .payable-high {
-          border-left: 5px solid #28a745;
-        }
-
-        .payable-low {
-          border-left: 5px solid #dc3545;
-        }
-
-        .payable-avg {
-          border-left: 5px solid #0d6efd;
-        }
-
-        .emp-name {
-          font-size: 14px;
-          font-weight: 700;
-          margin-top: 4px;
         }
       `}</style>
 
@@ -152,31 +148,31 @@ export default function PayrollSummary() {
             <h2>₹{highestSalary}</h2>
           </div>
 
-          {/* PAYABLE – HIGHEST */}
           {highestPayableEmp && (
             <div className="summary-card payable-high">
               <p>Highest Payable</p>
               <h2>₹{highestPayableEmp.payable}</h2>
-              <div className="emp-name">{highestPayableEmp.name}</div>
+              <div className="emp-name">
+                Name: {highestPayableEmp.name}
+              </div>
             </div>
           )}
 
-          {/* PAYABLE – LOWEST */}
           {lowestPayableEmp && (
             <div className="summary-card payable-low">
               <p>Lowest Payable</p>
               <h2>₹{lowestPayableEmp.payable}</h2>
-              <div className="emp-name">{lowestPayableEmp.name}</div>
+              <div className="emp-name">
+                Name: {lowestPayableEmp.name}
+              </div>
             </div>
           )}
 
-          {/* PAYABLE – AVERAGE */}
           <div className="summary-card payable-avg">
             <p>Average Payable</p>
             <h2>₹{averagePayable}</h2>
           </div>
 
-          {/* DEPARTMENT */}
           <div className="summary-card dept-card">
             <p>Department</p>
             {Object.entries(departmentCount).map(([dept, count]) => (
