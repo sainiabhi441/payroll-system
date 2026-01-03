@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { usePayroll } from "../../contexts/PayrollContext";
 import EmployeeCard from "./EmployeeCard";
+import Pagination from "../common/Pagination";
 
 export default function PayslipList() {
   const { employees } = usePayroll();
@@ -9,6 +10,10 @@ export default function PayslipList() {
   // 🔍 Search & Filter state
   const [search, setSearch] = useState("");
   const [department, setDepartment] = useState("All");
+
+  // 🔢 Pagination state
+  const ITEMS_PER_PAGE = 6;
+  const [currentPage, setCurrentPage] = useState(1);
 
   // 🔎 Filtered employees
   const filteredEmployees = employees.filter((emp) => {
@@ -21,6 +26,19 @@ export default function PayslipList() {
 
     return matchName && matchDept;
   });
+
+  // 🔢 Pagination logic
+  const totalPages = Math.ceil(
+    filteredEmployees.length / ITEMS_PER_PAGE
+  );
+
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+
+  const currentEmployees = filteredEmployees.slice(
+    startIndex,
+    endIndex
+  );
 
   return (
     <>
@@ -70,12 +88,18 @@ export default function PayslipList() {
             type="text"
             placeholder="Search employee name..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setCurrentPage(1); // search pe page reset
+            }}
           />
 
           <select
             value={department}
-            onChange={(e) => setDepartment(e.target.value)}
+            onChange={(e) => {
+              setDepartment(e.target.value);
+              setCurrentPage(1); // filter pe page reset
+            }}
           >
             <option value="All">All Departments</option>
             <option value="Production">Production</option>
@@ -91,10 +115,26 @@ export default function PayslipList() {
 
         {/* LIST CONTAINER */}
         <div className="card-list">
-          {filteredEmployees.map((emp) => (
+          {currentEmployees.map((emp) => (
             <EmployeeCard key={emp.empId} emp={emp} />
           ))}
         </div>
+
+        {/* 🔢 PAGINATION */}
+        {totalPages > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPrev={() =>
+              setCurrentPage((p) => Math.max(p - 1, 1))
+            }
+            onNext={() =>
+              setCurrentPage((p) =>
+                Math.min(p + 1, totalPages)
+              )
+            }
+          />
+        )}
       </div>
     </>
   );
