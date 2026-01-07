@@ -2,22 +2,41 @@ export default function Pagination({
   currentPage,
   totalPages,
   onPrev,
-  onNext
+  onNext,
+  onPageChange
 }) {
   return (
     <div className="pagination">
+      {/* Prev Button */}
       <button
+        className="nav-btn"
         disabled={currentPage === 1}
         onClick={onPrev}
       >
         Prev
       </button>
 
-      <span style={{ margin: "0 12px" }}>
-        Page {currentPage} of {totalPages}
-      </span>
+      {/* Page Numbers */}
+      <div className="page-numbers">
+        {Array.from({ length: totalPages }, (_, i) => {
+          const page = i + 1;
+          return (
+            <button
+              key={page}
+              className={`page-btn ${
+                currentPage === page ? "active" : ""
+              }`}
+              onClick={() => onPageChange(page)}
+            >
+              {page}
+            </button>
+          );
+        })}
+      </div>
 
+      {/* Next Button */}
       <button
+        className="nav-btn"
         disabled={currentPage === totalPages}
         onClick={onNext}
       >
