@@ -5,6 +5,9 @@ export default function Pagination({
   onNext,
   onPageChange
 }) {
+  // Agar sirf 1 page ho to pagination mat dikhao
+  if (totalPages <= 1) return null;
+
   return (
     <div className="pagination">
       {/* Prev Button */}
@@ -26,7 +29,7 @@ export default function Pagination({
               className={`page-btn ${
                 currentPage === page ? "active" : ""
               }`}
-              onClick={() => onPageChange(page)}
+              onClick={() => onPageChange && onPageChange(page)}
             >
               {page}
             </button>

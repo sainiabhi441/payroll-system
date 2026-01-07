@@ -171,37 +171,68 @@
 }
 
 
+/* 🔢 PAGINATION CONTAINER */
 .pagination {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
-  margin: 25px 0;
+  gap: 14px;
+  margin: 30px 0;
 }
 
-.pagination button {
-  padding: 6px 14px;
+/* ⬅️ Prev / Next Buttons */
+.pagination .nav-btn {
+  padding: 7px 16px;
   border: none;
-  border-radius: 6px;
-  background-color: #2c3e50;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #34495e, #2c3e50);
   color: #fff;
   font-size: 14px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.25s ease;
 }
 
-.pagination button:hover:not(:disabled) {
-  background-color: #1a252f;
+.pagination .nav-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: linear-gradient(135deg, #1f2d3a, #1a252f);
 }
 
-.pagination button:disabled {
-  background-color: #ccc;
+.pagination .nav-btn:disabled {
+  background: #ccc;
   cursor: not-allowed;
 }
 
-.pagination span {
-  font-weight: 500;
-  color: #333;
+/* 🔢 PAGE NUMBERS WRAPPER */
+.page-numbers {
+  display: flex;
+  gap: 10px;
 }
 
+/* 🔘 PAGE NUMBER BUTTON */
+.page-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: #e0e0e0;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  color: #333;
+  transition: all 0.25s ease;
+}
 
+/* Hover effect */
+.page-btn:hover {
+  background: #90caf9;
+  color: #0d47a1;
+  transform: scale(1.05);
+}
+
+/* ⭐ ACTIVE PAGE */
+.page-btn.active {
+  background: linear-gradient(135deg, #42a5f5, #1e88e5);
+  color: #fff;
+  box-shadow: 0 6px 12px rgba(30, 136, 229, 0.4);
+  transform: scale(1.1);
+}
