@@ -81,7 +81,6 @@ export default function PayslipList() {
       </style>
 
       <div className="payslip-list">
-
         {/* 🔍 SEARCH + FILTER */}
         <div className="filter-bar">
           <input
@@ -90,7 +89,7 @@ export default function PayslipList() {
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
-              setCurrentPage(1); // search pe page reset
+              setCurrentPage(1);
             }}
           />
 
@@ -98,7 +97,7 @@ export default function PayslipList() {
             value={department}
             onChange={(e) => {
               setDepartment(e.target.value);
-              setCurrentPage(1); // filter pe page reset
+              setCurrentPage(1);
             }}
           >
             <option value="All">All Departments</option>
@@ -120,7 +119,7 @@ export default function PayslipList() {
           ))}
         </div>
 
-        {/* 🔢 PAGINATION */}
+        {/* 🔢 PAGINATION (FIXED) */}
         {totalPages > 1 && (
           <Pagination
             currentPage={currentPage}
@@ -133,6 +132,7 @@ export default function PayslipList() {
                 Math.min(p + 1, totalPages)
               )
             }
+            onPageChange={(page) => setCurrentPage(page)}
           />
         )}
       </div>
