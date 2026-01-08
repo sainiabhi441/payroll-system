@@ -236,3 +236,30 @@
   box-shadow: 0 6px 12px rgba(30, 136, 229, 0.4);
   transform: scale(1.1);
 }
+
+
+/* 🔵 PREV BUTTON – BLUE */
+.pagination .prev-btn {
+  background: linear-gradient(135deg, #42a5f5, #1565c0);
+}
+
+.pagination .prev-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #1e88e5, #0d47a1);
+}
+
+/* 🟢 NEXT BUTTON – GREEN */
+.pagination .next-btn {
+  background: linear-gradient(135deg, #4caf50, #2e7d32);
+}
+
+.pagination .next-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #43a047, #1b5e20);
+}
+
+/* DISABLED */
+.pagination .prev-btn:disabled,
+.pagination .next-btn:disabled {
+  background: #e0e0e0;
+  color: #888;
+}
+
